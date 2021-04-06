@@ -69,6 +69,7 @@ const headerTokenConfig = config => {
   const method = config.method.toUpperCase();
   if (method !== "OPTIONS") {
     let {csrf, token} = getToken();
+		if(token===null) return config;
     config.headers = {
       ...config.headers,
       "X-CSRF-TOKEN": csrf,

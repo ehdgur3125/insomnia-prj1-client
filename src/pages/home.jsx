@@ -8,10 +8,20 @@ import {
   NavTitle, Page,
   Row
 } from 'framework7-react';
-import React from 'react';
+import React,{useState, useEffect} from 'react';
+import {createAsyncPromise} from '../common/api/api.config';
 
 
-const HomePage = () => {
+const HomePage = (props) => {
+  const [categoryId,setCategoryId]=useState(-1);
+  const [items,setItems]=useState([]);
+  useEffect(async()=>{
+    const getItems=createAsyncPromise('GET',props.categoryId?`/items/${props.categoryId}`:'/items');
+    const data=await getItems();
+    console.log(data);
+    setItems(data.items);
+    setCategoryId(props.categoryId||0);
+  },[categoryId]);
   return <Page name="home">
       {/* Top Navbar */}
       <Navbar sliding={false}>
@@ -24,12 +34,12 @@ const HomePage = () => {
       
       {/* Page content */}
       <div className="p-3">
-        <p>This is an example of tabs-layout application. The main point of such tabbed layout is that each tab contains independent view with its own routing and navigation.</p>
-        <p>Each tab/view may have different layout, different navbar type (dynamic, fixed or static) or without navbar like this tab.</p>
+        {categoryId>=0
+        ?<ul><List>
+          {items.map(item=><ListItem key={item.itemId} title={item.name} link={`/item/${item.itemId}`}/>)}
+        </List></ul>
+        :<div>로딩중</div>}
       </div>
-      <List>
-        <ListItem link="/about/" title="About"/>
-      </List>
 
     </Page>
   };
