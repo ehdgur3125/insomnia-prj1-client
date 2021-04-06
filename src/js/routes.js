@@ -10,14 +10,14 @@ import MyOrdersPage from '../pages/myOrders.jsx';
 import ItemPage from '../pages/item';
 
 const routes = [
-  { path: "/", component: HomePage },
-  { path: "/:categoryId", component: HomePage },
   { path: "/users/sign_in/", component: LoginPage },
   { path: "/users/sign_up/", component: SignUpPage },
   { path: "/cart/", component: CartPage},
   { path: "/users/mypage/", component: MyPage},
   { path: "/users/my_orders/", component: MyOrdersPage},
   { path: "/item/:itemId",component:ItemPage},
+  { path: "/", component: HomePage },
+  { path: "/:categoryId", component: HomePage },
   { path: "(.*)", component: NotFoundPage }
 ];
 

@@ -18,10 +18,9 @@ const HomePage = (props) => {
   useEffect(async()=>{
     const getItems=createAsyncPromise('GET',props.categoryId?`/items/${props.categoryId}`:'/items');
     const data=await getItems();
-    console.log(data);
     setItems(data.items);
     setCategoryId(props.categoryId||0);
-  },[categoryId]);
+  },[]);
   return <Page name="home">
       {/* Top Navbar */}
       <Navbar sliding={false}>

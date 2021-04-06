@@ -10,7 +10,7 @@ const Categories=()=>{
     const data=await getCategories();
     setCategories(data.categories);
     setIsLoaded(true);
-  },[isLoaded]);
+  },[]);
   return <>
     <ListItem title="전체" icon="las la-question" link='/' panelClose></ListItem>
     {

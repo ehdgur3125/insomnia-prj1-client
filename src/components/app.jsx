@@ -69,8 +69,8 @@ const MyApp = () => {
           <Link tabLink="#view-home" tabLinkActive icon="las la-gift" text="쇼핑" />
           <Link tabLink="#view-carts" icon="las la-shopping-cart" text="장바구니" />
         </Toolbar>
-        <View id="view-home" main tab tabActive url="/" iosDynamicNavbar={false} />
-        <View id="view-carts" name="carts" tab url="/cart/" />
+        <View id="view-home" name="home" main tab tabActive url="/" iosDynamicNavbar={false} />
+        <View id="view-carts" name="carts" tab url="/cart/"/>
       </Views>
     </App>
   );
