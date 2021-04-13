@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Page,
-  Navbar,
-  Block,
-  List,
-  ListItem,
-  Row,
-  Col,
-} from "framework7-react";
+import { Page, Navbar, List, ListItem, Row, Col } from "framework7-react";
 import { createAsyncPromise } from "../common/api/api.config";
 
 const MyOrder = (props) => {
@@ -20,9 +12,10 @@ const MyOrder = (props) => {
   return (
     <Page noToolbar>
       <Navbar title="my order" backLink="Back" />
-      <div className="md:flex md:justify-center">
-        <div className="md:w-2/3">
-          {!myOrder ? null : (
+      <div className="md:flex md:justify-center"><div className="md:w-2/3">
+        {!myOrder
+          ? null
+          : (
             <div className="text-center text-base">
               <div className="border my-5 mx-10">
                 <Row>
@@ -91,8 +84,7 @@ const MyOrder = (props) => {
               </ul>
             </div>
           )}
-        </div>
-      </div>
+      </div></div>
     </Page>
   );
 };

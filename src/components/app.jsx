@@ -1,9 +1,6 @@
-import { App, Link, List, ListItem, Navbar, Page, 
-  Panel, Toolbar, View, Views } from "framework7-react";
+import { App } from "framework7-react";
 import "lodash";
 import React from "react";
-import { logout } from "../common/api";
-import { getToken } from "../common/auth";
 import store from "../common/store";
 import { getDevice } from "../js/framework7-custom.js";
 import routes from "../js/routes";

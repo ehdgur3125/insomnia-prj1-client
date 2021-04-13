@@ -1,13 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  Page,
-  Navbar,
-  Block,
-  List,
-  ListItem,
-  Row,
-  Col,
-} from "framework7-react";
+import React, { useEffect } from "react";
+import { Page, Navbar, Row, Col } from "framework7-react";
 import { createAsyncPromise } from "../common/api/api.config";
 import { useRecoilState } from "recoil";
 import { myInfoState } from "../js/atoms";
@@ -15,14 +7,10 @@ import MyOrders from "../components/myOrders"
 
 const MyPage = () => {
   const [info, setInfo] = useRecoilState(myInfoState);
-  const [myOrders, setMyOrders] = useState(null);
   const getMypage = createAsyncPromise("GET", "/myinfo");
-  const getMyOrders = createAsyncPromise("GET", "/myorders");
   useEffect(async () => {
     const infoPromise = getMypage();
-    const ordersPromise = getMyOrders();
     setInfo(await infoPromise);
-    setMyOrders((await ordersPromise).orders);
   }, []);
   return (
     <Page noToolbar>

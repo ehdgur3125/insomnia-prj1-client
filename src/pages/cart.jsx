@@ -1,15 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  f7,
-  Page,
-  Navbar,
-  List,
-  ListItem,
-  Button,
-  Row,
-  Col,
-  Icon,
-} from "framework7-react";
+import { f7, Page, Navbar, List, Button, Row, Col } from "framework7-react";
 import { createAsyncPromise } from "../common/api/api.config";
 import { getToken } from "../common/auth";
 import { useRecoilState } from "recoil";
@@ -50,7 +40,9 @@ const Cart = (props) => {
           </List>
         </ul>
       ) : (
-        <div>카트가 비어있습니다.</div>
+        <div className='h-full flex flex-col justify-center'>
+          <div className='text-base text-center '>카트가 비어있습니다.</div>
+        </div>
       )}
     </Page>
   );

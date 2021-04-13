@@ -36,7 +36,7 @@ const ItemDesc = (props) => {
   return (
     <>
       <p className="text-xl md:mt-5">{item.name}</p>
-      <p className="my-5">{item.text}</p>
+      <p className="my-3">{item.text}</p>
       <Row className="mx-10">
         <Col width="33" medium='0'>
           <Button

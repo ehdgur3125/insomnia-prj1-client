@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sheet, Toolbar, Button, Row, Col } from "framework7-react";
+import { Sheet, Button, Row, Col } from "framework7-react";
 import { cartReadyState, selectState } from "../js/atoms";
 import { useRecoilState } from "recoil";
 import CartReadyList from "./cartReadyList";

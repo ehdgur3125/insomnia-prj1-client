@@ -34,8 +34,9 @@ const PostReview = (props) => {
   }, []);
 
   return (
-    <>
-      <Row noGap className='justify-start mx-5 mt-10 '>
+    <div>
+      <Row className='text-center'><Col><div>평점을 선택해주세요.</div></Col></Row>
+      <Row noGap className='justify-center mx-5 my-5 '>
         {Array(5).fill(0).map((x, index) =>
           <Col width='10' medium='5' key={`star${index}`}>
             <Button iconF7={grade > index ? 'star_fill' : 'star'}
@@ -48,7 +49,7 @@ const PostReview = (props) => {
         <div className='border p-2 w-5/6 h-full'><textarea className='w-full h-full' onChange={handleChange} value={text} /></div>
         <Button fill className='w-1/6 h-full' onClick={handleClick}>리뷰</Button>
       </div>
-    </>
+    </div>
   );
 };
 

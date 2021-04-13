@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Row, Col, Icon } from "framework7-react";
+import { Button, Row, Col } from "framework7-react";
 import { createAsyncPromise } from "../common/api/api.config";
 import { cartState, cartReadyState } from "../js/atoms";
 import { useRecoilState } from "recoil";
