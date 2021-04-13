@@ -1,47 +1,56 @@
-import React, {useState, useEffect} from 'react';
-import { Page, Navbar, Block, NavLeft, Link } from 'framework7-react';
-import {createAsyncPromise} from '../common/api/api.config';
-import { getToken} from '../common/auth'
+import React, { useState, useEffect } from "react";
+import { Page, Navbar, Row, Col, Button } from "framework7-react";
+import { createAsyncPromise } from "../common/api/api.config";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { cartState, itemState, cartReadyState } from "../js/atoms";
+import ItemDesc from "../components/itemDesc";
+import ItemOption from "../components/itemOption";
+import { getToken } from "../common/auth";
+import PostReview from '../components/postReview';
+import Reviews from '../components/reviews';
 
 const Item = (props) => {
-  const [itemId,setItemId]=useState(0);
-  const [item,setItem]=useState(null);
-  useEffect(async()=>{
-    const data=await createAsyncPromise('GET',`/item/${props.itemId}`)();
+  const [item, setItem] = useRecoilState(itemState);
+  const cart = useRecoilValue(cartState);
+  const [, setCartReady] = useRecoilState(cartReadyState);
+
+  useEffect(async () => {
+    const data = await createAsyncPromise("GET", `/item/${props.itemId}`)();
     setItem(data.item);
-    setItemId(props.itemId);
-  },[]);
+    setCartReady([]);
+  }, [cart]);
   return (
-    <Page>
-      <Navbar title={(itemId>0)?item.name:''} sliding={false} backLink='Back'>
-      </Navbar>
-        {itemId>0
-        ? <>
-          <p>{item.text}</p>
-          <p>찜한 사람들 : {item.likes}</p>
-          <p>판매된 갯수 : {item.purchases}</p> 
-          <button onClick={()=>{
-            if(getToken().token){
-              if(!item.liked){
-                createAsyncPromise('POST','/like')({itemId});
-                setItem({...item,likes:item.likes+1,liked:true});
-              }
-              else{
-                createAsyncPromise('DELETE',`/like/${itemId}`)();
-                setItem({...item,likes:item.likes-1,liked:false});
-              }
-            }
-          }}>{item.liked?"이미 좋아요됨":"좋아요"}</button>
-          <ul>{item.options.map(option=><li key={option.optionId}>{option.text} : {option.price} {option.inCart
-            ?"이미 카트에 있음"
-            :<Link onClick={()=>{
-              if(getToken().token){
-                createAsyncPromise('POST','/cart')({optionId:option.optionId});
-              }
-            }} tabLink='#view-carts'>카트에 넣기</Link>
-            }</li>)}</ul>
-        </>
-        :null}
+    <Page noToolbar>
+      <Navbar
+        title={item ? item.name : ""}
+        sliding={false}
+        backLink="Back"
+      ></Navbar>
+      {item
+        ? (
+          <div className="text-center text-base mb-16 md:grid md:grid-cols-4 md:mt-20">
+            <div className="md:col-start-2 md:col-span-1">
+              <Row className="flex-col items-center pb-5">
+                <Col width="80">
+                  <img
+                    src={`http://localhost:3000/img/big/${item.name}`}
+                    className="w-full"
+                  />
+                </Col>
+              </Row>
+            </div>
+            <div className="md:col-end-4 md:col-span-1">
+              <ItemDesc></ItemDesc>
+              <ItemOption></ItemOption>
+            </div>
+          </div>
+        ) : null}
+      {item && item.purchased && item.purchased.length > 0
+        ? <PostReview />
+        : null}
+      {item
+        ? <Reviews />
+        : null}
     </Page>
   );
 };

@@ -1,7 +1,8 @@
-module.exports={
-  sleep:t=>new Promise((resolve,reject)=>{
-    setTimeout(()=>{
-      resolve(t);
-    },t);
-  })
-}
+module.exports = {
+  sleep: (t) =>
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(t);
+      }, t);
+    }),
+};

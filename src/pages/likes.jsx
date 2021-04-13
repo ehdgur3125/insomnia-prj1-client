@@ -1,45 +1,26 @@
-import {
-  Block,
-  BlockTitle,
-  Button,
-  Col,
-  Link,
-  List,
-  ListItem,
-  Navbar,
-  NavLeft,
-  NavRight,
-  NavTitle,
-  Page,
-  Row,
-} from "framework7-react";
-import React, { useState, useEffect } from "react";
+import { Link, Navbar, NavLeft, NavRight, Page } from "framework7-react";
+import React, { useEffect } from "react";
 import { createAsyncPromise } from "../common/api/api.config";
+import { useRecoilState } from "recoil";
+import { likesState } from "../js/atoms";
 import ItemInList from "../components/itemInList";
 
-const HomePage = (props) => {
-  const [categoryId, setCategoryId] = useState(-1);
-  const [items, setItems] = useState([]);
+const Likes = (props) => {
+  const [items, setItems] = useRecoilState(likesState);
   useEffect(async () => {
-    const getItems = createAsyncPromise(
-      "GET",
-      props.categoryId ? `/items/${props.categoryId}` : "/items"
-    );
+    const getItems = createAsyncPromise("GET", "myLikes");
     const data = await getItems();
     setItems(data.items);
-    setCategoryId(props.categoryId || 0);
   }, []);
   return (
-    <Page name="home">
-      {/* Top Navbar */}
+    <Page>
       <Navbar className="text-center " sliding={false}>
         <NavLeft>
           <Link icon="las la-bars" panelOpen="left" />
         </NavLeft>
-        Insomenia Shop
+        찜목록
         <NavRight className="w-10"> </NavRight>
       </Navbar>
-      {/* Page content */}
       <div className="flex justify-center">
         <img
           src={`https://insomenia.com/svgs/artificial`}
@@ -48,11 +29,13 @@ const HomePage = (props) => {
         />
       </div>
       <div className="p-3 grid grid-cols-2 md:grid-cols-8 justify-items-center">
-        {categoryId >= 0
-          ? <ItemInList items={items}></ItemInList>
-          : null}
+        {
+          items
+            ? <ItemInList items={items}></ItemInList>
+            : null
+        }
       </div>
     </Page>
   );
 };
-export default HomePage;
+export default Likes;
