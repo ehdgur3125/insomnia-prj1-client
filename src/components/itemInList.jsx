@@ -6,10 +6,10 @@ function ItemInList({ items }) {
   return items.map((item) => (
     <a key={item.itemId}
       href={`/item/${item.itemId}`}
-      className="text-center text-base mt-5 mx-1"
+      className="text-center text-base mt-5 w-40"
     >
       <Row>
-        <Col>
+        <Col className='h-40'>
           <img
             src={`http://localhost:3000/img/small/${item.name}`}
             className="w-full h-full border-b"

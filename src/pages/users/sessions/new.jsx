@@ -91,7 +91,7 @@ const SessionNewPage = () => {
                   </button>
                   <a
                     type="button"
-                    href="/users/sign_up/"
+                    href="/users/sign_up"
                     className="button button-fill button-large disabled:opacity-50"
                   >
                     회원가입

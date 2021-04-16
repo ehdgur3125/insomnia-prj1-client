@@ -75,13 +75,13 @@ const IntroPage = (props) => {
       <Navbar className="hidden"></Navbar>
       <Toolbar bottom className="p-0" inner={false}>
         <div className="w-full flex">
-          <Button className="w-full rounded-none" large href="/users/sign_in">
+          <Button className="w-full rounded-none" large href="/users/sign_in/">
             로그인
           </Button>
           <Button
             className="w-full rounded-none"
             large
-            href="/users/sign_up"
+            href="/users/sign_up/"
             fill
           >
             회원가입

@@ -36,32 +36,30 @@ const ItemDesc = (props) => {
   return (
     <>
       <p className="text-xl md:mt-5">{item.name}</p>
-      <p className="my-3">{item.text}</p>
-      <Row className="mx-10">
-        <Col width="33" medium='0'>
-          <Button
-            className="md:hidden"
-            fill
-            sheetOpen=".option-sheet"
-          >
-            옵션
-          </Button>
-        </Col>
-        <Col width="66" medium='100'>
+      <Row className="">
+        <Col width="100">
           <Row className='justify-center'>
-            <Col width='25' onClick={handleClick}>
+            <Col width='0' medium='30' className='hidden md:block' onClick={handleClick}>
               <Icon
                 f7={!item.liked ? "hand_thumbsup" : "hand_thumbsup_fill"}
                 color="default" />
             </Col>
-            <Col width='25'>{item.likes}</Col>
-            <Col width='25'>
-              <Icon color='yellow' f7='star_filled' />
+            <Col width='0' medium='30' className='hidden md:block' >{item.likes}</Col>
+          </Row>
+          <Row className='justify-center'>
+            <Col width='50' medium='80'>
+              {Array(5).fill(0).map((x, index) => index + 1 <= item.grade
+                ? <Icon color='yellow' f7='star_filled' key={`star${index}`} />
+                : (index + 0.5 <= item.grade)
+                  ? <Icon color='yellow' f7='star_lefthalf_filled' key={`star${index}`} />
+                  : <Icon color='yellow' f7='star' key={`star${index}`} />)
+              }
             </Col>
-            <Col width='25'>{item.grade ? item.grade.toFixed(2) : 0}</Col>
+            <Col width='20' medium='20'>{item.grade ? item.grade.toFixed(2) : 0}</Col>
           </Row>
         </Col>
       </Row>
+      <p className="my-3">{item.text}</p>
     </>
   );
 };

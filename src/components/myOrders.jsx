@@ -15,22 +15,22 @@ const MyOrders = () => {
         {myOrders === null
           ? null
           : myOrders.length === 0
-          ? "주문내역이 없습니다."
-          : myOrders.map((order) => (
-            <ListItem
-              key={order.orderId}
-              href={`/users/my_orders/${order.orderId}`}
-            >
-              <Row className="w-full">
-                <Col width="80" className="truncate">
-                  {order.summary}
-                </Col>
-                <Col width="20" className="text-center">
-                  {order.state}
-                </Col>
-              </Row>
-            </ListItem>
-          ))
+            ? "주문내역이 없습니다."
+            : myOrders.map((order) => (
+              <ListItem
+                key={order.orderId}
+                href={`/users/my_orders/${order.orderId}/`}
+              >
+                <Row className="w-full">
+                  <Col width="80" className="truncate">
+                    {order.summary}
+                  </Col>
+                  <Col width="20" className="text-center">
+                    {order.state}
+                  </Col>
+                </Row>
+              </ListItem>
+            ))
         }
       </List>
     </ul>

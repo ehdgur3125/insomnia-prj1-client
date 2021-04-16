@@ -14,14 +14,14 @@ const Reviews = (props) => {
   return (
     <div className='my-10'>
       {item.reviews.map((review, index) => {
-        const createdAt = new Date(review.createdAt);
-        const day = `${createdAt.getFullYear() % 100}-${format(createdAt.getMonth() + 1)}-${format(createdAt.getDate())}`;
-        const time = `${format(createdAt.getHours())}:${format(createdAt.getMinutes())}:${format(createdAt.getSeconds())}`;
+        const updatedAt = new Date(review.updatedAt);
+        const day = `${updatedAt.getFullYear() % 100}-${format(updatedAt.getMonth() + 1)}-${format(updatedAt.getDate())}`;
+        const time = `${format(updatedAt.getHours())}:${format(updatedAt.getMinutes())}:${format(updatedAt.getSeconds())}`;
         return (
-          <Row key={`review${index}`} className='mx-5 border border-b-4 border-r-2 rounded-l-lg rounded-br-3xl my-5'>
+          <Row key={`review${index}`} className='mx-5 p-3 border border-b-4 border-r-2 rounded-l-lg rounded-br-3xl my-5'>
             <Col width='100' medium='60'>
               <Row>
-                <Col className='text-left text-base'>{review.User.username}</Col>
+                <Col className='text-left text-base'>{review.username}</Col>
                 <Col className='text-right'>{day} {time}</Col>
               </Row>
               <Row noGap className='justify-start'>
@@ -29,7 +29,7 @@ const Reviews = (props) => {
               </Row>
               <Row className='my-2'>
                 <Col className='text-left text-base'>{review.text.split('\n').map((line, lineIndex) =>
-                  <div key={`review${index}line${lineIndex}`}>{line}</div>)}</Col>
+                  <div key={`review${index}line${lineIndex}`} className='break-words'>{line}</div>)}</Col>
               </Row>
             </Col>
           </Row>

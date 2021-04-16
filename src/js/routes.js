@@ -9,16 +9,27 @@ import MyOrderPage from "../pages/myOrder.jsx";
 import ItemPage from "../pages/item";
 import PurchasePage from "../pages/purchase";
 import LikesPage from "../pages/likes";
+import SuccessPage from "../pages/success";
+import FailPage from "../pages/fail";
 
 const routes = [
-  { path: "/users/sign_in/", component: LoginPage },
-  { path: "/users/sign_up/", component: SignUpPage },
-  { path: "/cart/", component: CartPage },
-  { path: "/purchase/", component: PurchasePage },
-  { path: "/users/mypage/", component: MyPage },
+  {
+    path: "/users",
+    component: MyPage,
+    routes: [
+      { path: "/mypage", component: MyPage },
+      { path: "/sign_in", component: LoginPage },
+      { path: "/sign_up", component: SignUpPage }
+    ]
+  },
+  { path: "/success", component: SuccessPage },
+  { path: "/fail", component: FailPage },
+  { path: "/cart", component: CartPage },
+  { path: "/purchase", component: PurchasePage },
   { path: "/users/my_orders/:orderId", component: MyOrderPage },
+  { path: "/item", component: HomePage },
   { path: "/item/:itemId", component: ItemPage },
-  { path: "/likes/", component: LikesPage},
+  { path: "/likes", component: LikesPage },
   { path: "/", component: HomePage },
   { path: "/:categoryId", component: HomePage },
   { path: "(.*)", component: NotFoundPage },

@@ -75,7 +75,7 @@ const headerTokenConfig = (config) => {
     config.headers = {
       ...config.headers,
       "X-CSRF-TOKEN": csrf,
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${token}`
     };
   }
   return config;
@@ -93,6 +93,7 @@ const headerConfig = {
     "Content-Type": "application/json",
     "Accept-Version": `v${version}`,
   },
+  withCredentials: true
 };
 
 const PlainAPI = axios.create(headerConfig);
@@ -106,7 +107,7 @@ export const createAsyncPromise = (method, path) => {
   return async (props) => {
     try {
       // if (signal) console.log(signal)
-      const res = await API[method.toLowerCase()](path, { params: props });
+      const res = await API[method.toLowerCase()](path, { params: props }, { withCredentials: true });
       return res.data;
     } catch (e) {
       console.error(e);

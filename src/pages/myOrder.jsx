@@ -54,7 +54,7 @@ const MyOrder = (props) => {
                   {myOrder.listItems.map((listItem) => (
                     <ListItem
                       key={listItem.optionId}
-                      href={`/item/${listItem.itemId}`}
+                      href={`/item/${listItem.itemId}/`}
                     >
                       <Row noGap className="w-full text-center items-center">
                         <Col width="25" small="10">

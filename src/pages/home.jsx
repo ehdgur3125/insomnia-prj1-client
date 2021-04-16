@@ -1,4 +1,5 @@
 import {
+  f7,
   Block,
   BlockTitle,
   Button,
@@ -47,7 +48,7 @@ const HomePage = (props) => {
           className="w-full md:w-72"
         />
       </div>
-      <div className="p-3 grid grid-cols-2 md:grid-cols-8 justify-items-center">
+      <div className="p-3 grid grid-cols-2 md:grid-cols-5 justify-items-center">
         {categoryId >= 0
           ? <ItemInList items={items}></ItemInList>
           : null}

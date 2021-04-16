@@ -16,8 +16,8 @@ export const refresh = (_) =>
     {
       headers: {
         "X-CSRF-TOKEN": getToken().csrf,
-        Authorization: `Bearer ${getToken().token}`,
       },
+      withCredentials: "include"
     }
   ).then((res) => {
     saveToken(res.data);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   f7,
   Navbar,
@@ -13,6 +13,7 @@ import { signup } from "@/common/api";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { toast, sleep } from "../../../js/utils.js";
+import DaumPostcode from "react-daum-postcode";
 
 const SignUpSchema = Yup.object().shape({
   name: Yup.string().required("필수 입력사항 입니다"),
@@ -29,6 +30,8 @@ const SignUpSchema = Yup.object().shape({
 });
 
 const SignUpPage = () => {
+  const [address, setAddress] = useState(null);
+  const [daumOpened, setDaumOpened] = useState(false);
   return (
     <Page noToolbar>
       <Navbar title="회원가입" backLink={true} sliding={false}></Navbar>
@@ -50,7 +53,8 @@ const SignUpPage = () => {
               setSubmitting(false);
               await sleep(400);
               try {
-                (await signup({ user: values })).data;
+                if (address === null) throw '주소를 선택해주세요';
+                (await signup({ user: { ...values, address: `${address} ${values.address}` } })).data;
                 //toast.get().setToastText('로그인 되었습니다.').openToast();
                 location.replace("/");
               } catch (error) {
@@ -111,11 +115,29 @@ const SignUpPage = () => {
                     errorMessage={touched.phone && errors.phone}
                     size="40"
                   />
+                  <ListItem header='주소' title={address || '주소를 선택하세요'}
+                    after={<button
+                      className="button button-fill w-1/6"
+                      type='button'
+                      onClick={() => {
+                        setDaumOpened(x => !x);
+                      }}
+                    >
+                      주소
+                      </button>}
+                  >
+                  </ListItem>
+                  {daumOpened
+                    ? <DaumPostcode autoResize onComplete={(data) => {
+                      setAddress(data.address + (data.buildingName ? " " + data.buildingName : ""));
+                      setDaumOpened(false);
+                    }} />
+                    : undefined}
                   <ListInput
-                    label={i18next.t("login.address1")}
+                    label={i18next.t("login.address2")}
                     type="address"
                     name="address"
-                    placeholder="주소를 입력해주세요"
+                    placeholder="상세주소를 입력해주세요"
                     clearButton
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -123,7 +145,7 @@ const SignUpPage = () => {
                     errorMessageForce={true}
                     errorMessage={touched.address && errors.address}
                     size="40"
-                  />
+                  ></ListInput>
                   <ListInput
                     label={i18next.t("login.password")}
                     type="password"
@@ -158,7 +180,7 @@ const SignUpPage = () => {
                   <button
                     type="submit"
                     className="button button-fill button-large disabled:opacity-50"
-                    disabled={isSubmitting || !isValid}
+                    disabled={isSubmitting || !isValid || !address}
                   >
                     회원가입
                   </button>

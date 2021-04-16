@@ -15,7 +15,7 @@ const TabView = () => {
   //const device = getDevice();
   // Framework7 Parameters
   return (
-    <Views tabs className="safe-areas">
+    <Views tabs className="safe-areas" >
       {/* Tabbar for switching views-tabs */}
       <Toolbar tabbar labels bottom>
         <Link tabLink="#view-home" tabLinkActive
@@ -25,13 +25,13 @@ const TabView = () => {
             iconBadge={cart ? cart.listItems.length : undefined}
             text="장바구니" badgeColor="default" />
         ) : (
-          <Link tabLink="#view_home" href="/users/sign_in/"
+          <Link tabLink="#view-home" href="/users/sign_in"
             icon="las la-shopping-cart" text="장바구니" />
         )}
       </Toolbar>
       <View id="view-home" name="home" main tab
-        tabActive url="/" iosDynamicNavbar={false} />
-      <View id="view-carts" name="carts" tab url="/cart/" />
+        tabActive url="/" iosDynamicNavbar={false} browserHistory='true' browserHistorySeparator="" />
+      <View id="view-carts" name="carts" tab url="/cart" />
     </Views>
   );
 };

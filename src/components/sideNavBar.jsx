@@ -26,12 +26,12 @@ const SideNavBar = () => {
               <>
                 <ListItem
                   title="마이페이지"
-                  link="/users/mypage/"
+                  link="/users/mypage"
                   panelClose
                 ></ListItem>
                 <ListItem
                   title="찜목록"
-                  link="/likes/"
+                  link="/likes"
                   panelClose
                 ></ListItem>
                 <ListItem
@@ -44,7 +44,7 @@ const SideNavBar = () => {
             ) : (
               <ListItem
                 title="로그인"
-                link="/users/sign_in/"
+                link="/users/sign_in"
                 panelClose
               ></ListItem>
             )}
