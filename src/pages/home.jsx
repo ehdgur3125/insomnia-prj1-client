@@ -1,36 +1,58 @@
 import {
+  f7,
   Block,
   BlockTitle,
-  Button, Col, Link,
+  Button,
+  Col,
+  Link,
   List,
-  ListItem, Navbar,
+  ListItem,
+  Navbar,
   NavLeft,
-  NavTitle, Page,
-  Row
-} from 'framework7-react';
-import React from 'react';
+  NavRight,
+  NavTitle,
+  Page,
+  Row,
+} from "framework7-react";
+import React, { useState, useEffect } from "react";
+import { createAsyncPromise } from "../common/api/api.config";
+import ItemInList from "../components/itemInList";
 
-
-const HomePage = () => {
-  return <Page name="home">
+const HomePage = (props) => {
+  const [categoryId, setCategoryId] = useState(-1);
+  const [items, setItems] = useState([]);
+  useEffect(async () => {
+    const getItems = createAsyncPromise(
+      "GET",
+      props.categoryId ? `/items/${props.categoryId}` : "/items"
+    );
+    const data = await getItems();
+    setItems(data.items);
+    setCategoryId(props.categoryId || 0);
+  }, []);
+  return (
+    <Page name="home">
       {/* Top Navbar */}
-      <Navbar sliding={false}>
+      <Navbar className="text-center " sliding={false}>
         <NavLeft>
-          <Link icon='las la-bars' panelOpen="left" />
+          <Link icon="las la-bars" panelOpen="left" />
         </NavLeft>
+        Insomenia Shop
+        <NavRight className="w-10"> </NavRight>
       </Navbar>
-      <div className="bg-white">
-      </div>
-      
       {/* Page content */}
-      <div className="p-3">
-        <p>This is an example of tabs-layout application. The main point of such tabbed layout is that each tab contains independent view with its own routing and navigation.</p>
-        <p>Each tab/view may have different layout, different navbar type (dynamic, fixed or static) or without navbar like this tab.</p>
-      </div>
-      <List>
-        <ListItem link="/about/" title="About"/>
-      </List>
-
+      {/*<div className="flex flex-col items-center">
+        <div className='text-xl'>혼자 사는 당신을 위한 한 끼 식사</div>
+        <img
+          src={`http://localhost:3000/img/main.jpg`}
+          alt=""
+          className="w-full md:w-72"
+        />
+  </div>*/}
+      {categoryId >= 0
+        ? <ItemInList items={items} setItems={setItems}></ItemInList>
+        : null}
     </Page>
-  };
+  );
+};
 export default HomePage;

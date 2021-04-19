@@ -1,8 +1,6 @@
 {
   "cwd": "/Users/gmkseta/Repository/framework7/framework7-react",
-  "type": [
-    "web"
-  ],
+  "type": ["web"],
   "name": "Practice",
   "pkg": "com.insomenia.practice",
   "framework": "react",
@@ -14,11 +12,7 @@
     "rtl": false,
     "darkTheme": true,
     "lightTheme": true,
-    "themes": [
-      "ios",
-      "md",
-      "aurora"
-    ],
+    "themes": ["ios", "md", "aurora"],
     "components": [
       "appbar",
       "dialog",
