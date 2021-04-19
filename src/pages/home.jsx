@@ -41,18 +41,17 @@ const HomePage = (props) => {
         <NavRight className="w-10"> </NavRight>
       </Navbar>
       {/* Page content */}
-      <div className="flex justify-center">
+      {/*<div className="flex flex-col items-center">
+        <div className='text-xl'>혼자 사는 당신을 위한 한 끼 식사</div>
         <img
-          src={`https://insomenia.com/svgs/artificial`}
+          src={`http://localhost:3000/img/main.jpg`}
           alt=""
           className="w-full md:w-72"
         />
-      </div>
-      <div className="p-3 grid grid-cols-2 md:grid-cols-5 justify-items-center">
-        {categoryId >= 0
-          ? <ItemInList items={items}></ItemInList>
-          : null}
-      </div>
+  </div>*/}
+      {categoryId >= 0
+        ? <ItemInList items={items} setItems={setItems}></ItemInList>
+        : null}
     </Page>
   );
 };

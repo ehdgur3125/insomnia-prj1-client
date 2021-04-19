@@ -19,17 +19,17 @@ const MyPage = () => {
         <div className="md:w-2/3">
           {!info ? null : (
             <div className="text-base text-center m-10 border">
-              <Row>
-                <Col width="30" className="border-r">
+              <Row className='items-center' noGap>
+                <Col width="30">
                   주소
                 </Col>
-                <Col width="70">{info.address}</Col>
+                <Col width="70" className="border-l">{info.address}</Col>
               </Row>
-              <Row>
-                <Col width="30" className="border-r">
+              <Row noGap>
+                <Col width="30">
                   전화번호
                 </Col>
-                <Col width="70">{info.phone}</Col>
+                <Col width="70" className="border-l">{info.phone}</Col>
               </Row>
             </div>
           )}

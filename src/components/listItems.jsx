@@ -24,15 +24,16 @@ const ListItems = (props) => {
   return cart.listItems.map((listItem, index) => (
     <ListItem key={listItem.optionId}>
       <Row noGap className="w-full text-center items-center">
-        <Col width='50'>
+        <Col width='100'>
           <Row className="items-center">
-            <Col>{listItem.itemName}</Col>
-            <Col>{listItem.optionText}</Col>
-            <Col>{listItem.price}</Col>
+            <Col width='70'>{listItem.itemName} {listItem.optionText}</Col>
+            <Col width='30'>{listItem.price}원</Col>
           </Row>
-        </Col>
-        <Col width='50'>
-          <QuanNBtn {...{ index, handleDelete, handleQuantity, array: cart.listItems }}></QuanNBtn>
+          <Row className='justify-end'>
+            <Col width='50'>
+              <QuanNBtn {...{ index, handleDelete, handleQuantity, array: cart.listItems }}></QuanNBtn>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </ListItem>

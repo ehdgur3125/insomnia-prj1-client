@@ -11,6 +11,7 @@ import PurchasePage from "../pages/purchase";
 import LikesPage from "../pages/likes";
 import SuccessPage from "../pages/success";
 import FailPage from "../pages/fail";
+import SearchPage from "../pages/search";
 
 const routes = [
   {
@@ -25,6 +26,7 @@ const routes = [
   { path: "/success", component: SuccessPage },
   { path: "/fail", component: FailPage },
   { path: "/cart", component: CartPage },
+  { path: "/search", component: SearchPage },
   { path: "/purchase", component: PurchasePage },
   { path: "/users/my_orders/:orderId", component: MyOrderPage },
   { path: "/item", component: HomePage },

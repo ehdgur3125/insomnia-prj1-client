@@ -11,7 +11,7 @@ import DaumPostcode from "react-daum-postcode";
 import { cartState } from "../js/atoms";
 
 const PurchaseSchema = Yup.object().shape({
-  address: Yup.string().required('상세주소를 입력해주세요'),
+  address: Yup.string(),
   phone: Yup.string()
 });
 
@@ -43,13 +43,17 @@ const PurchasePage = () => {
             initialValues={{ address: "", phone: "", account: "" }}
             validationSchema={PurchaseSchema}
             onSubmit={async (values, { setSubmitting }) => {
+              if (address && !values.address) {
+                f7.dialog.alert("상세 주소를 입력하세요", "주소");
+                return;
+              }
               if (howToPay === '결제 방법을 선택하세요') {
                 f7.dialog.alert("결제 방법을 선택하세요", "결제");
                 return;
               }
               f7.dialog.preloader("정보를 확인중입니다");
               setSubmitting(false);
-              await sleep(400);
+              await sleep(100);
               try {
                 const tossPayments = TossPayments("test_ck_O6BYq7GWPVvN5LOyqzLVNE5vbo1d");
                 await createAsyncPromise("POST", "/purchase")({
@@ -101,13 +105,12 @@ const PurchasePage = () => {
                   </ListItem>
                   <div className='text-sm'>
                     {daumOpened
-                      ? <DaumPostcode width='100%' height='200%' onComplete={(data) => {
+                      ? <DaumPostcode autoResize onComplete={(data) => {
                         setAddress(data.address + (data.buildingName ? " " + data.buildingName : ""));
                         setDaumOpened(false);
                       }}
                         style={{
                           position: "absolute",
-                          fontSize: "5px",
                           top: '50%',
                           left: "0%",
                           zIndex: "100",
@@ -150,7 +153,7 @@ const PurchasePage = () => {
                   <button
                     type="submit"
                     className="button button-fill button-large disabled:opacity-50"
-                    disabled={isSubmitting || !isValid}
+                    disabled={howToPay === '결제 방법을 선택하세요' || isSubmitting}
                   >
                     결제
                   </button>
@@ -159,7 +162,7 @@ const PurchasePage = () => {
             )}
           </Formik>
           <Sheet
-            className="option-sheet h-auto min-h-1/10 border-indigo-500 rounded-t-xl border-r-8 border-l-8 border-t-8 pt-5"
+            className="option-sheet h-auto min-h-1/10 border-yellow-500 rounded-t-xl border-r-8 border-l-8 border-t-8 pt-5"
             closeByOutsideClick
             opened={sheetOpened}
             onSheetClosed={() => setSheetOpened(false)}>

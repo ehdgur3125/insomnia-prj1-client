@@ -30,11 +30,6 @@ const SideNavBar = () => {
                   panelClose
                 ></ListItem>
                 <ListItem
-                  title="찜목록"
-                  link="/likes"
-                  panelClose
-                ></ListItem>
-                <ListItem
                   title="로그아웃"
                   link="#"
                   panelClose

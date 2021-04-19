@@ -36,7 +36,7 @@ const SelectOption = (props) => {
   return (
     <div className="w-full text-base text-center">
       {item.options.map((option, index) => (
-        <div value={index} key={option.optionId} className='mx-5 my-3 md:hover:bg-indigo-200 border rounded-xl'
+        <div value={index} key={option.optionId} className='mx-5 my-3 md:hover:bg-yellow-200 border rounded-xl'
           onClick={() => handleClick(index)}>
           {option.text} : {option.price}원
         </div>

@@ -18,7 +18,7 @@ const ItemOption = (props) => {
   const [select, setSelect] = useRecoilState(selectState);
   return (
     <Sheet
-      className="option-sheet h-auto min-h-1/10 border-indigo-500 rounded-t-xl border-r-8 border-l-8 border-t-8 pt-5"
+      className="option-sheet h-auto min-h-1/10 border-yellow-500 rounded-t-xl border-r-8 border-l-8 border-t-8 pt-5"
       closeByOutsideClick
       opened={sheetOpened}
       onSheetClosed={() => setSheetOpened(false)}>

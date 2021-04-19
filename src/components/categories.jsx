@@ -22,11 +22,12 @@ const Categories = () => {
       {isLoaded ? (
         categories.map((category) => (
           <ListItem
-            title={`${category.name} (${category.quantity})`}
+            title={category.name}
+            after={<div className='text-black'>({category.quantity})</div>}
             key={category.id}
-            icon="las la-question"
             link={`/${category.id}`}
             panelClose
+            className='pl-3'
           ></ListItem>
         ))
       ) : (
