@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { f7, Row, Col, Button } from 'framework7-react';
 import { createAsyncPromise } from "../common/api/api.config";
-import { itemState } from "../js/atoms";
+import { itemState, reloadTriggerState } from "../js/atoms";
 
 const PostReview = (props) => {
   let communicating = false; // 연타했을 때 두개 입력되는거 방지용
   const [text, setText] = useState("");
   const [grade, setGrade] = useState(0);
   const [item, setItem] = useRecoilState(itemState);
+  const [, setReloadTrigger] = useRecoilState(reloadTriggerState);
   const [patch, setPatch] = useState(false);
 
   const handleChange = (e) => {
@@ -19,6 +20,7 @@ const PostReview = (props) => {
   };
 
   const handleClick = async () => {
+    if (communicating) return;
     if (text === "") {
       f7.dialog.alert("리뷰를 입력해주세요", "");
       return;
@@ -27,7 +29,6 @@ const PostReview = (props) => {
       f7.dialog.alert("평점을 선택해주세요", "");
       return;
     }
-    if (communicating) return;
     communicating = true;
     if (!item.reviewed) {
       await createAsyncPromise('POST', "/review")({
@@ -45,7 +46,7 @@ const PostReview = (props) => {
       setPatch(false);
     }
     const data = await createAsyncPromise("GET", `/item/${item.itemId}`)();
-    setItem(data.item);
+    setReloadTrigger(x => x + 1);
     communicating = false;
   }
 

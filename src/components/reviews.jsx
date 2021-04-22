@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Col, Icon } from "framework7-react";
 import { useRecoilValue } from "recoil";
-import { itemState } from "../js/atoms";
+import { reviewsState } from "../js/atoms";
 
 function format(i) {
   if (i < 10) return "0" + i;
@@ -9,11 +9,11 @@ function format(i) {
 }
 
 const Reviews = (props) => {
-  const item = useRecoilValue(itemState);
+  const reviews = useRecoilValue(reviewsState);
 
   return (
     <div className='my-10'>
-      {item.reviews.map((review, index) => {
+      {reviews.map((review, index) => {
         const updatedAt = new Date(review.updatedAt);
         const day = `${updatedAt.getFullYear() % 100}-${format(updatedAt.getMonth() + 1)}-${format(updatedAt.getDate())}`;
         const time = `${format(updatedAt.getHours())}:${format(updatedAt.getMinutes())}:${format(updatedAt.getSeconds())}`;

@@ -16,11 +16,11 @@ const Cart = (props) => {
   }, []);
   return (
     <Page>
-      <Navbar sliding={false}></Navbar>
+      <Navbar sliding={false} title='장바구니'></Navbar>
       {
         getToken().token
           ? cart && cart.listItems.length > 0 ? (
-            <ul>
+            <ul className='-mt-10'>
               <List>
                 <ListItems></ListItems>
                 <Row className>

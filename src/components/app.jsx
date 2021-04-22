@@ -15,7 +15,7 @@ const MyApp = () => {
   //const device = getDevice();
   // Framework7 Parameters
   const f7params = {
-    name: "Practice", // App name
+    name: "Insomenia Shop", // App name
     theme: "ios", // Automatic theme detection
     id: "com.insomenia.practice", // App bundle ID
     // App store

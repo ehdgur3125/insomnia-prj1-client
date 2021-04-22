@@ -24,26 +24,26 @@ const QuanNBtn = ({ index, array, handleQuantity, handleDelete }) => {
   return (
     <Row className='items-center' gap='10'>
       <Col width="20">
-        <Button fill onClick={() => handleQuantity(index, array[index].quantity - 1)}>
+        <Button fill color='gray' onClick={() => handleQuantity(index, array[index].quantity - 1)}>
           <Icon f7="chevron_left" className="text-sm mb-2" />
         </Button>
       </Col>
-      <Col width="30" className="border-2">
+      <Col width="30" className="border-2 h-8 flex flex-col items-center">
         <input type="number" min="1" className="text-center w-full"
           onChange={(event) => handleQuantity(index, event.target.value)}
           value={array[index].quantity || ""}
         />
       </Col>
       <Col width="20" className="flex-row items-center">
-        <Button fill onClick={() => handleQuantity(index, array[index].quantity + 1)}>
+        <Button fill color='gray' onClick={() => handleQuantity(index, array[index].quantity + 1)}>
           <Icon f7="chevron_right" className="text-sm mb-2" />
         </Button>
       </Col>
       <Col width="20" className="p-1">
-        <Button fill onClick={() => handleDelete(index)}
+        <Button fill color='gray' onClick={() => handleDelete(index)}
         >
-          X
-      </Button>
+          <Icon f7="multiply" className="text-sm mb-2" />
+        </Button>
       </Col>
     </Row>
   );

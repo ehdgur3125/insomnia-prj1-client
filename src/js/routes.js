@@ -33,7 +33,7 @@ const routes = [
   { path: "/item/:itemId", component: ItemPage },
   { path: "/likes", component: LikesPage },
   { path: "/", component: HomePage },
-  { path: "/:categoryId", component: HomePage },
+  { path: "/:categoryName", component: HomePage },
   { path: "(.*)", component: NotFoundPage },
 ];
 

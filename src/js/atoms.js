@@ -10,10 +10,6 @@ const myInfoState = atom({
   default: null,
 });
 
-const likesState = atom({
-  key: "likes",
-  default: []
-});
 
 const cartReadyState = atom({
   key: "cartReady",
@@ -25,8 +21,18 @@ const itemState = atom({
   default: null
 });
 
+const reloadTriggerState = atom({
+  key: "reloadTrigger",
+  default: 0
+});
+
+const reviewsState = atom({
+  key: "reviews",
+  default: []
+});
 const selectState = atom({
   key: "selectState",
   default: false
-})
-export { cartState, myInfoState, likesState, cartReadyState, itemState, selectState };
+});
+
+export { cartState, myInfoState, cartReadyState, itemState, selectState, reloadTriggerState, reviewsState };

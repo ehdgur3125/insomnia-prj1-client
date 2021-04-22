@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Page, Navbar, List, ListItem, Row, Col } from "framework7-react";
+import { Page, Navbar, List, ListItem, Row, Col, Link, Icon } from "framework7-react";
 import { createAsyncPromise } from "../common/api/api.config";
 
 const MyOrder = (props) => {
@@ -16,72 +16,37 @@ const MyOrder = (props) => {
         {!myOrder
           ? null
           : (
-            <div className="text-center text-base">
-              <div className="border my-5 mx-10">
-                <Row>
-                  <Col width="40" className="border-r">
-                    주문번호
-                  </Col>
-                  <Col width="60">{myOrder.orderId}</Col>
-                </Row>
-                <Row>
-                  <Col width="40" className="border-r">
-                    주문상태
-                  </Col>
-                  <Col width="60">{myOrder.state}</Col>
-                </Row>
-                <Row>
-                  <Col width="40" className="border-r">
-                    결제금액
-                  </Col>
-                  <Col width="60">{myOrder.total}</Col>
-                </Row>
-              </div>
-              <ul>
-                <List>
-                  <ListItem>
-                    <Row noGap className="w-full text-center pr-5">
-                      <Col width="25" small="10"></Col>
-                      <Col width="25" small="30"></Col>
-                      <Col width="25" small="30">
-                        개당가격
-                      </Col>
-                      <Col width="25" small="30">
-                        수량
-                      </Col>
-                    </Row>
-                  </ListItem>
-                  {myOrder.listItems.map((listItem) => (
-                    <ListItem
-                      key={listItem.optionId}
-                      href={`/item/${listItem.itemId}/`}
-                    >
-                      <Row noGap className="w-full text-center items-center">
-                        <Col width="25" small="10">
-                          <img
-                            src={`http://localhost:3000/img/small/${listItem.itemName}`}
-                            className="w-full"
-                          />
-                        </Col>
-                        <Col width="25" small="30">
-                          <Row>
-                            <Col>{listItem.itemName}</Col>
-                          </Row>
-                          <Row>
-                            <Col>{listItem.optionText}</Col>
-                          </Row>
-                        </Col>
-                        <Col width="25" small="30">
-                          {listItem.price}
-                        </Col>
-                        <Col width="25" small="30">
-                          {listItem.quantity}
-                        </Col>
-                      </Row>
-                    </ListItem>
-                  ))}
-                </List>
-              </ul>
+            <div className="text-base px-5">
+              <div className='text-xl border-b'><b>주문정보</b></div>
+              <div className='text-sm'>주문번호</div>
+              <div className='text-lg border-b'>{myOrder.orderId}</div>
+              <div className='text-sm'>주문상태</div>
+              <div className='text-lg border-b'>{myOrder.state}</div>
+              <div className='text-sm'>결제금액</div>
+              <div className='text-lg border-b'>{myOrder.total}원</div>
+              <div className='text-sm'>주소</div>
+              <div className='text-lg border-b' style={{ wordBreak: "keep-all" }}>{myOrder.address}</div>
+              <div className='text-sm'>연락처</div>
+              <div className='text-lg border-b'>{myOrder.phone}</div>
+
+              <div className='text-xl mt-5 border-b'><b>구매한 상품</b></div>
+              {myOrder.listItems.map((listItem) => (
+                <Link key={listItem.optionId}
+                  className='border-b'
+                  href={`/item/${listItem.itemId}/`}>
+                  <Row noGap className="w-full text-center items-stretch">
+                    <Col width='50'><img src={`http://localhost:3000/img/big/${listItem.itemName}/${listItem.optionId}`} /></Col>
+                    <Col width='40' className='flex flex-col items-end'>
+                      <div>{listItem.itemName}</div>
+                      <div>{listItem.optionText}</div>
+                      <div className='text-sm'>개당 {listItem.price}원</div>
+                      <div className='text-sm'>{listItem.quantity}개</div>
+                      <div className='text-sm'>총 {listItem.quantity * listItem.price}원</div>
+                    </Col>
+                    <Col width='10' className='flex justify-center items-center'> <Icon f7='chevron_right' /></Col>
+                  </Row>
+                </Link>
+              ))}
             </div>
           )}
       </div></div>

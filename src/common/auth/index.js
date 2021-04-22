@@ -10,7 +10,7 @@ export const getToken = () => {
   };
 };
 
-export const saveToken = ({ refreshToken, token, csrf }) => {
+export const saveToken = ({ token, csrf }) => {
   window.localStorage.setItem(ID_TOKEN_KEY, token);
   window.localStorage.setItem(CSRF_KEY, csrf);
 };

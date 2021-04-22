@@ -37,7 +37,11 @@ const SessionNewPage = () => {
                 location.replace("/");
               } catch (error) {
                 f7.dialog.close();
-                //toast.get().setToastText(error?.response?.data || error?.message).openToast()
+                f7.toast.show({
+                  position: "top",
+                  text: error?.response?.data || error?.message,
+                  closeTimeout: 2000
+                });
               }
             }}
             validateOnMount={true}

@@ -3,10 +3,10 @@ import { f7, Row, Col, Icon, Button } from "framework7-react";
 import { createAsyncPromise } from "../common/api/api.config";
 import { getToken } from "../common/auth";
 import { useRecoilState } from "recoil";
-import { likesState, itemState } from "../js/atoms";
+import { reloadTriggerState } from "../js/atoms";
 
 const Bookmark = ({ item, setItem }) => {
-  const [, setItems] = useRecoilState(likesState);
+  const [, setReloadTriggerState] = useRecoilState(reloadTriggerState);
   const handleClick = async () => {
     if (getToken().token) {
       if (!item.liked) {
@@ -16,8 +16,6 @@ const Bookmark = ({ item, setItem }) => {
           likes: item.likes + 1,
           liked: true,
         });
-        const myLikes = await createAsyncPromise("GET", "/mylikes")();
-        setItems(myLikes.items);
       } else {
         await createAsyncPromise("DELETE", `/like/${item.itemId}`)();
         setItem({
@@ -25,9 +23,8 @@ const Bookmark = ({ item, setItem }) => {
           likes: item.likes - 1,
           liked: false,
         });
-        const myLikes = await createAsyncPromise("GET", "/mylikes")();
-        setItems(myLikes.items);
       }
+      setReloadTriggerState(x => x + 1);
     } else {
       f7.dialog.alert("로그인이 필요합니다.", "회원 전용");
     }

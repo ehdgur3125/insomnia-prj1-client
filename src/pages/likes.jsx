@@ -1,22 +1,23 @@
 import { Link, Navbar, NavLeft, NavRight, Page, Button } from "framework7-react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { createAsyncPromise } from "../common/api/api.config";
-import { useRecoilState } from "recoil";
-import { likesState } from "../js/atoms";
+import { useRecoilValue } from "recoil";
+import { reloadTriggerState } from "../js/atoms";
 import ItemInList from "../components/itemInList";
 import { getToken } from "../common/auth";
 
 const Likes = (props) => {
-  const [items, setItems] = useRecoilState(likesState);
+  const [items, setItems] = useState([]);
+  const reloadTrigger = useRecoilValue(reloadTriggerState);
   useEffect(async () => {
     if (!getToken().token) return;
     const getItems = createAsyncPromise("GET", "myLikes");
     const data = await getItems();
     setItems(data.items);
-  }, []);
+  }, [reloadTrigger]);
   return (
     <Page>
-      <Navbar className="text-center " sliding={false} />
+      <Navbar className="text-center" title='북마크' sliding={false} />
       {
         getToken().token
           ? items.length > 0

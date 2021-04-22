@@ -13,20 +13,21 @@ const SideNavBar = () => {
   };
   return (
     <Panel left cover>
-      <Page className="border-r-8">
+      <Page className="border-r">
         <Navbar title="메뉴" />
-        <ul>
+        <div className='text-lg border-b ml-3 mt-3'><b>카테고리</b></div>
+        <ul className='-my-7'>
           <List>
             <Categories></Categories>
           </List>
         </ul>
-        <ul>
+        <ul className='-my-7 ml-3'>
           <List>
             {loggedIn ? (
               <>
                 <ListItem
                   title="마이페이지"
-                  link="/users/mypage"
+                  link="/users"
                   panelClose
                 ></ListItem>
                 <ListItem

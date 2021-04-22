@@ -3,17 +3,25 @@ import { f7, Page, Navbar, List, Button, Row, Col, Input, Icon } from "framework
 import { createAsyncPromise } from "../common/api/api.config";
 import { Formik } from "formik";
 import ItemInList from "../components/itemInList";
+import { useRecoilValue } from "recoil";
+import { reloadTriggerState } from "../js/atoms";
 
 const Search = (props) => {
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState([]);
   const [keyword, setKeyword] = useState("");
+  const reloadTrigger = useRecoilValue(reloadTriggerState);
   const getNewResult = async (keyword) => {
     const searched = await createAsyncPromise("GET", `/search?keyword=${keyword}`)();
     setResult(searched.items);
-  }
+  };
+  useEffect(() => {
+    if (keyword) {
+      getNewResult(keyword);
+    }
+  }, [reloadTrigger])
   return (
     <Page>
-      <Navbar sliding={false}></Navbar>
+      <Navbar sliding={false} title={keyword || "검색"}></Navbar>
       <Formik initialValues={{ keyword: "" }}
         onSubmit={async (values, { setSubmitting }) => {
           getNewResult(values.keyword);

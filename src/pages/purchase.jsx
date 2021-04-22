@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { f7, Sheet, Page, Navbar, List, ListInput, Button, ListItem } from "framework7-react";
+import { f7, Sheet, Page, Navbar, List, ListInput, Button, ListItem, Row, Col } from "framework7-react";
 import { toast, sleep } from "../js/utils.js";
 import { Formik } from "formik";
 import { createAsyncPromise } from "../common/api/api.config";
@@ -12,11 +12,12 @@ import { cartState } from "../js/atoms";
 
 const PurchaseSchema = Yup.object().shape({
   address: Yup.string(),
-  phone: Yup.string()
+  phone: Yup.string().matches(/^\d{3}-\d{3,4}-\d{4}$/, '전화번호의 양식을 확인해주세요')
 });
 
 const PurchasePage = () => {
   const cart = useRecoilValue(cartState);
+  const [useDef, setUseDef] = useState(true);
   const [info, setInfo] = useRecoilState(myInfoState);
   const [sheetOpened, setSheetOpened] = useState(false);
   const [howToPay, setHowToPay] = useState('결제 방법을 선택하세요');
@@ -39,14 +40,23 @@ const PurchasePage = () => {
       <Navbar title="결제" backLink={true} sliding={false} />
       <div className="md:flex md:justify-center">
         <div className="md:w-1/3">
+          <Row noGap className='text-center text-base border-b'>
+            <Col width='30'> 결제 물품 </Col>
+            <Col width='70' className='border-l'>{`${cart.listItems[0].itemName} ${cart.listItems[0].optionText}${cart.listItems.length > 1
+              ? ` 외 ${cart.listItems.length - 1} 건`
+              : ""}`}</Col>
+          </Row>
+          <Row noGap className='text-center text-base border-b'>
+            <Col width='30'> 결제 금액 </Col>
+            <Col width='70' className='border-l'>{cart.total}원</Col>
+          </Row>
+          <div className='flex justify-end mt-10 mx-5'>
+            <Button onClick={() => setUseDef(x => !x)} color='black' className='border w-1/2 mb-10'>{useDef ? "새 주소 입력" : "내 정보의 주소 사용"}</Button>
+          </div>
           <Formik
             initialValues={{ address: "", phone: "", account: "" }}
             validationSchema={PurchaseSchema}
             onSubmit={async (values, { setSubmitting }) => {
-              if (address && !values.address) {
-                f7.dialog.alert("상세 주소를 입력하세요", "주소");
-                return;
-              }
               if (howToPay === '결제 방법을 선택하세요') {
                 f7.dialog.alert("결제 방법을 선택하세요", "결제");
                 return;
@@ -57,8 +67,8 @@ const PurchasePage = () => {
               try {
                 const tossPayments = TossPayments("test_ck_O6BYq7GWPVvN5LOyqzLVNE5vbo1d");
                 await createAsyncPromise("POST", "/purchase")({
-                  address: `${address} ${values.address}`,
-                  phone: values.phone,
+                  address: useDef ? info.address : address ? `${address} ${values.address}` : info.address,
+                  phone: useDef ? info.phone : values.phone || info.phone,
                 });
                 tossPayments.requestPayment(howToPay, {
                   amount: cart.total,
@@ -73,7 +83,7 @@ const PurchasePage = () => {
                 f7.dialog.close();
               } catch (error) {
                 f7.dialog.close();
-                f7.dialog.alert("결제 오류")
+                f7.dialog.alert(error?.response?.data || error?.message, "결제 오류")
                 //toast.get().setToastText(error?.response?.data || error?.message).openToast()
               }
             }}
@@ -90,62 +100,71 @@ const PurchasePage = () => {
               isValid,
             }) => (
               <form onSubmit={handleSubmit}>
-                <List>
-                  <ListItem header='주소' title={address || '주소를 선택하세요'}
-                    after={<button
-                      className="button button-fill w-1/6"
-                      type='button'
-                      onClick={() => {
-                        setDaumOpened(x => !x);
-                      }}
+                {useDef
+                  ? <div className="text-base text-center -mt-9 mb-8 pb-0.5">
+                    <Row className='items-stretch border-b h-28 border-t' noGap>
+                      <Col width="30" className='flex flex-col justify-center'>
+                        주소
+                      </Col>
+                      <Col width="70" className="border-l px-4 break-nomals flex flex-col justify-center" style={{
+                        wordBreak: 'keep-all'
+                      }}>{info ? info.address : null}</Col>
+                    </Row>
+                    <Row noGap className='border-b h-10 items-stretch'>
+                      <Col width="30 " className="flex flex-col justify-center">
+                        전화번호
+                      </Col>
+                      <Col width="70" className="border-l flex flex-col justify-center">{info ? info.phone : null}</Col>
+                    </Row>
+                  </div>
+                  :
+                  <List className='-mt-9'>
+                    <ListItem header='주소' title={address || '주소를 선택하세요'}
+                      after={<Button
+                        className="w-1/6 border"
+                        color='black'
+                        onClick={() => {
+                          setDaumOpened(x => !x);
+                        }}
+                      >
+                        주소
+                      </Button>}
                     >
-                      주소
-                      </button>}
-                  >
-                  </ListItem>
-                  <div className='text-sm'>
+                    </ListItem>
                     {daumOpened
-                      ? <DaumPostcode autoResize onComplete={(data) => {
+                      ? <ListItem><DaumPostcode autoResize slot='after-title' onComplete={(data) => {
                         setAddress(data.address + (data.buildingName ? " " + data.buildingName : ""));
                         setDaumOpened(false);
-                      }}
-                        style={{
-                          position: "absolute",
-                          top: '50%',
-                          left: "0%",
-                          zIndex: "100",
-                          overflow: "hidden"
-                        }} />
+                      }} /></ListItem>
                       : undefined}
-                  </div>
-                  <ListInput
-                    label={i18next.t("login.address2")}
-                    type="address"
-                    name="address"
-                    placeholder="상세주소를 입력해주세요"
-                    clearButton
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.address}
-                    errorMessageForce={true}
-                    errorMessage={touched.address && errors.address}
-                    size="40"
-                  ></ListInput>
-                  <ListInput
-                    label="전화번호"
-                    name="phone"
-                    type="phone"
-                    placeholder="전화번호를 입력해주세요."
-                    clearButton
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.phone}
-                    errorMessageForce={true}
-                    errorMessage={touched.phone && errors.phone}
-                    size="40"
-                  />
-                </List>
-                <div className='flex justify-center'>
+                    <ListInput
+                      label={i18next.t("login.address2")}
+                      type="address"
+                      name="address"
+                      placeholder="상세주소를 입력해주세요"
+                      clearButton
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.address}
+                      errorMessageForce={true}
+                      errorMessage={touched.address && errors.address}
+                      size="40"
+                    ></ListInput>
+                    <ListInput
+                      label="전화번호"
+                      name="phone"
+                      type="phone"
+                      placeholder="전화번호를 입력해주세요."
+                      clearButton
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.phone}
+                      errorMessageForce={true}
+                      errorMessage={touched.phone && errors.phone}
+                      size="40"
+                    />
+                  </List>}
+                <div className='flex flex-col items-center'>
                   <Button className='border-gray-200 border-2 hover:border-gray-700 text-black rounded-xl bg-gray-100 hover:bg-gray-700 hover:text-white text-base text-center w-2/3'
                     sheetOpen=".option-sheet">{howToPay}</Button>
                 </div>
@@ -153,7 +172,7 @@ const PurchasePage = () => {
                   <button
                     type="submit"
                     className="button button-fill button-large disabled:opacity-50"
-                    disabled={howToPay === '결제 방법을 선택하세요' || isSubmitting}
+                    disabled={howToPay === '결제 방법을 선택하세요' || isSubmitting || !isValid}
                   >
                     결제
                   </button>

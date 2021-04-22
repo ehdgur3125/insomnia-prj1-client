@@ -1,5 +1,5 @@
 import React from "react";
-import { f7 } from "framework7-react";
+import { f7, Row, Col } from "framework7-react";
 import { getToken } from "../common/auth";
 import { cartReadyState, itemState, selectState } from "../js/atoms";
 import { useRecoilState } from "recoil";
@@ -36,10 +36,14 @@ const SelectOption = (props) => {
   return (
     <div className="w-full text-base text-center">
       {item.options.map((option, index) => (
-        <div value={index} key={option.optionId} className='mx-5 my-3 md:hover:bg-yellow-200 border rounded-xl'
+        <Row value={index} key={option.optionId} className='flex md:hover:bg-yellow-200 border-b'
           onClick={() => handleClick(index)}>
-          {option.text} : {option.price}원
-        </div>
+          <Col width='25'><img src={`http://localhost:3000/img/big/${item.name}/${option.optionId}`} /></Col>
+          <Col width='75' className='flex flex-col justify-begin text-left'>
+            <b className='text-lg'>{option.text}</b>
+            <div className='text-base'>{option.price}원</div>
+          </Col>
+        </Row>
       ))}
     </div>
   );

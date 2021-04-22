@@ -17,8 +17,8 @@ import DaumPostcode from "react-daum-postcode";
 
 const SignUpSchema = Yup.object().shape({
   name: Yup.string().required("필수 입력사항 입니다"),
-  email: Yup.string().email().required("필수 입력사항 입니다"),
-  phone: Yup.string().required("필수 입력사항 입니다"),
+  email: Yup.string().email('이메일의 양식을 확인해주세요').matches(/^[A-Za-z]\w*@\w+.\w+$/, '이메일의 양식을 확인해주세요').required("필수 입력사항 입니다"),
+  phone: Yup.string().matches(/^\d{3}-\d{3,4}-\d{4}$/, '전화번호의 양식을 확인해주세요').required("필수 입력사항 입니다"),
   address: Yup.string().required("필수 입력사항 입니다"),
   password: Yup.string()
     .min(4, "길이가 너무 짧습니다")
@@ -55,11 +55,19 @@ const SignUpPage = () => {
               try {
                 if (address === null) throw '주소를 선택해주세요';
                 (await signup({ user: { ...values, address: `${address} ${values.address}` } })).data;
-                //toast.get().setToastText('로그인 되었습니다.').openToast();
+                f7.toast.show({
+                  position: "top",
+                  text: '로그인 되었습니다.',
+                  closeTimeout: 2000
+                });
                 location.replace("/");
               } catch (error) {
                 f7.dialog.close();
-                //toast.get().setToastText(error?.response?.data || error?.message).openToast();
+                f7.toast.show({
+                  position: "top",
+                  text: error?.response?.data || error?.message,
+                  closeTimeout: 2000
+                });
               }
             }}
             validateOnMount={true}
@@ -128,10 +136,10 @@ const SignUpPage = () => {
                   >
                   </ListItem>
                   {daumOpened
-                    ? <DaumPostcode autoResize onComplete={(data) => {
+                    ? <ListItem><DaumPostcode autoResize slot='after-title' onComplete={(data) => {
                       setAddress(data.address + (data.buildingName ? " " + data.buildingName : ""));
                       setDaumOpened(false);
-                    }} />
+                    }} /></ListItem>
                     : undefined}
                   <ListInput
                     label={i18next.t("login.address2")}

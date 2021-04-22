@@ -4,12 +4,10 @@ import { createAsyncPromise } from "../common/api/api.config";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
-  const [isLoaded, setIsLoaded] = useState([false]);
   const getCategories = createAsyncPromise("GET", "/categories");
   useEffect(async () => {
     const data = await getCategories();
     setCategories(data.categories);
-    setIsLoaded(true);
   }, []);
   return (
     <>
@@ -19,13 +17,13 @@ const Categories = () => {
         link="/"
         panelClose
       ></ListItem>
-      {isLoaded ? (
+      {categories.length > 0 ? (
         categories.map((category) => (
           <ListItem
             title={category.name}
             after={<div className='text-black'>({category.quantity})</div>}
             key={category.id}
-            link={`/${category.id}`}
+            link={`/${category.name}`}
             panelClose
             className='pl-3'
           ></ListItem>
