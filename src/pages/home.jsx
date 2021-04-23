@@ -19,20 +19,28 @@ import { createAsyncPromise } from "../common/api/api.config";
 import ItemInList from "../components/itemInList";
 import { useRecoilValue } from "recoil"
 import { reloadTriggerState } from "../js/atoms";
+import { infiniteModule } from "../js/utils";
+const ishandlingInfinite = [false];
 
 const HomePage = (props) => {
   const [items, setItems] = useState([]);
   const reloadTrigger = useRecoilValue(reloadTriggerState);
+  const [inf, setInf] = useState(true);
+
+  const { getMore } = infiniteModule(`/items${props.categoryName ? `/${props.categoryName}` : ""}`,
+    items, setItems, setInf, ishandlingInfinite);
+
   useEffect(async () => {
-    const getItems = createAsyncPromise(
-      "GET",
-      props.categoryName ? `/items/${props.categoryName}` : "/items"
-    );
-    const data = await getItems();
-    setItems(data.items);
+    getMore(0);
   }, [reloadTrigger]);
+
+  const handleInfinite = async () => {
+    if (!inf) return;
+    getMore(items.length);
+  };
+
   return (
-    <Page name="home" className='md:flex md:flex-col md:items-end'>
+    <Page name="home" className='md:flex md:flex-col md:items-end' infinite infinitePreloader={inf} onInfinite={handleInfinite}>
       {/* Top Navbar */}
       <Navbar className="text-center " sliding={false}>
         <NavLeft>

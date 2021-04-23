@@ -11,7 +11,7 @@ const MyOrders = () => {
   }, []);
   return (
     <>
-      <div className='text-xl ml-5 w-full mb-5 border-b'><b>내 주문 내역</b></div>
+      <div className='text-xl mx-5 mb-5 border-b'><b>내 주문 내역</b></div>
       <div className="px-5">
         {myOrders === null
           ? null

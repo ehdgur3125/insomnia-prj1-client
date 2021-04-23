@@ -29,31 +29,26 @@ const Item = (props) => {
     setImgs(newImgs);
   }, [item?.itemId]);
 
+  const getMore = async (begin) => {
+    if (ishandlingInfinite) return;
+    ishandlingInfinite = true;
+    const newReviews = await createAsyncPromise("GET", `/reviews?itemId=${props.itemId}&begin=${begin}&limit=${infLen}`)();
+    if (newReviews.length < infLen) setInf(false);
+    if (begin === 0) setReviews([...reviews, ...newReviews]);
+    else setReviews(newReviews);
+    ishandlingInfinite = false;
+  };
+
   useEffect(async () => {
     const dataPromise = createAsyncPromise("GET", `/item/${props.itemId}`)();
-    const newReviewsPromise = createAsyncPromise("GET", `/reviews?itemId=${props.itemId}&begin=0&limit=${infLen}`)();
+    getMore(0);
     setItem((await dataPromise).item);
-    const newReviews = await newReviewsPromise;
-    if (newReviews.length < infLen) {
-      setInf(false);
-    }
-    else setInf(true);
-    setReviews([...newReviews.slice(0, infLen)]);
     setCartReady([]);
   }, [cart, reloadTrigger]);
 
   const handleInfinite = async () => {
     if (!inf) return;
-    if (ishandlingInfinite) return;
-    ishandlingInfinite = true;
-    const newReviews = await createAsyncPromise("GET", `/reviews?itemId=${item.itemId}&begin=${reviews.length}&limit=${infLen}`)();
-    if (newReviews.length < infLen) setInf(false);
-    if (newReviews.length === 0) {
-      ishandlingInfinite = true;
-      return;
-    }
-    setReviews([...reviews, ...newReviews.slice(0, infLen)]);
-    ishandlingInfinite = false;
+    getMore(reviews.length);
   };
   return (
     <Page noToolbar infinite infinitePreloader={inf} onInfinite={handleInfinite}>
@@ -80,7 +75,7 @@ const Item = (props) => {
                 {imgs.length > 0
                   ? imgs.map(img =>
                     <SwiperSlide key={img}><img
-                      className='w-full'
+                      className='w-full min-h-full'
                       src={`http://localhost:3000/img/big/${item.name}/${img}`}
                     /></SwiperSlide>)
                   : null}
