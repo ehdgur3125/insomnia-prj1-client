@@ -5,26 +5,37 @@ import { Formik } from "formik";
 import ItemInList from "../components/itemInList";
 import { useRecoilValue } from "recoil";
 import { reloadTriggerState } from "../js/atoms";
+import { infiniteModule } from "../js/utils";
+let ishandlingInfinite = [false];
 
 const Search = (props) => {
   const [result, setResult] = useState([]);
   const [keyword, setKeyword] = useState("");
   const reloadTrigger = useRecoilValue(reloadTriggerState);
-  const getNewResult = async (keyword) => {
-    const searched = await createAsyncPromise("GET", `/search?keyword=${keyword}`)();
-    setResult(searched.items);
+  const [inf, setInf] = useState(false);
+
+  const getNewResult = (word) => {
+    const { getMore } = infiniteModule(`search?keyword=${word}`, result, setResult, setInf, ishandlingInfinite);
+    return getMore;
   };
+
   useEffect(() => {
     if (keyword) {
-      getNewResult(keyword);
+      getNewResult(keyword)(0);
     }
-  }, [reloadTrigger])
+  }, [reloadTrigger]);
+
+  const handleInfinite = async () => {
+    if (!inf) return;
+    getNewResult(keyword)(result.length);
+  };
+
   return (
-    <Page>
+    <Page infinite infinitePreloader={!!keyword && inf} onInfinite={handleInfinite}>
       <Navbar sliding={false} title={keyword || "검색"}></Navbar>
       <Formik initialValues={{ keyword: "" }}
         onSubmit={async (values, { setSubmitting }) => {
-          getNewResult(values.keyword);
+          getNewResult(values.keyword)(0);
           setKeyword(values.keyword);
         }}>
         {({
@@ -51,7 +62,7 @@ const Search = (props) => {
       </Formik>
       {result
         ? result.length
-          ? <ItemInList items={result} setItems={getNewResult.bind(null, keyword)} />
+          ? <ItemInList items={result} setItems={setResult} />
           : (
             <div className='h-full flex flex-col justify-center'>
               <div className='text-base text-center '>검색 결과가 없습니다.</div>

@@ -5,18 +5,28 @@ import { useRecoilValue } from "recoil";
 import { reloadTriggerState } from "../js/atoms";
 import ItemInList from "../components/itemInList";
 import { getToken } from "../common/auth";
+import { infiniteModule } from "../js/utils";
+const ishandlingInfinite = [false];
 
 const Likes = (props) => {
   const [items, setItems] = useState([]);
   const reloadTrigger = useRecoilValue(reloadTriggerState);
+  const [inf, setInf] = useState(true);
+
+  const { getMore } = infiniteModule("/myLikes", items, setItems, setInf, ishandlingInfinite);
+
   useEffect(async () => {
     if (!getToken().token) return;
-    const getItems = createAsyncPromise("GET", "myLikes");
-    const data = await getItems();
-    setItems(data.items);
+    getMore(0);
   }, [reloadTrigger]);
+
+  const handleInfinite = async () => {
+    if (!inf) return;
+    getMore(items.length);
+  };
+
   return (
-    <Page>
+    <Page infinite infinitePreloader={items.length > 0 && inf} onInfinite={handleInfinite}>
       <Navbar className="text-center" title='북마크' sliding={false} />
       {
         getToken().token

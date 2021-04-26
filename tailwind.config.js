@@ -12,7 +12,11 @@ module.exports = {
       'mono': ['ui-monospace', 'SFMono-Regular'],
       'me': ["Noto Sans KR", "Apple SD Gothic Neo", "맑은 고딕", "Malgun Gothic", "sans-serif"]
     },
-    extend: {},
+    extend: {
+      spacing: {
+        md: "21px"
+      },
+    },
   },
   variants: {
     extend: {
