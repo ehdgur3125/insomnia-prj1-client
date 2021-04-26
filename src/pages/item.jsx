@@ -34,7 +34,7 @@ const Item = (props) => {
     ishandlingInfinite = true;
     const newReviews = await createAsyncPromise("GET", `/reviews?itemId=${props.itemId}&begin=${begin}&limit=${infLen}`)();
     if (newReviews.length < infLen) setInf(false);
-    if (begin === 0) setReviews([...reviews, ...newReviews]);
+    if (begin !== 0) setReviews([...reviews, ...newReviews]);
     else setReviews(newReviews);
     ishandlingInfinite = false;
   };
